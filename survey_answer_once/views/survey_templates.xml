@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <!-- Already Taken the survey -->
+    <template id="duplicatesurvey" name="Response Submitted">
+        <t t-call="website.layout">
+            <div class="wrap">
+                <div class="container">
+                    <div class="jumbotron mt32">
+                        <h1>You have already taken this survey!</h1>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</data>
+</openerp>
