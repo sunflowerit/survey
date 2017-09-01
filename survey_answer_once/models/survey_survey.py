@@ -23,7 +23,7 @@ class SurveyUserInputLine(models.Model):
                 existing = self.env['survey.user_input_line'].search([
                     ('id', '!=', record.id),
                     ('question_id', '=', record.question_id.id),
-                    ('user_input_id.partner_id.user_ids', 'in', self.env.uid)
+                    ('user_input_id.partner_id.user_id.id', '=', self.env.uid)
                 ])
                 if len(existing) > 0:
                     raise ValidationError(_('duplicate_answer'))

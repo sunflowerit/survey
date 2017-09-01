@@ -9,10 +9,20 @@ from openerp.exceptions import ValidationError
 class TestSurveyAnswerOnce(TransactionCase):
     def setUp(self):
         super(TestSurveyAnswerOnce, self).setUp()
+        self.partner_obj = self.env["res.partner"]
+        self.user_obj = self.env["res.users"]
         self.survey_obj = self.env['survey.survey']
         self.survey_page_obj = self.env['survey.page']
         self.question_obj = self.env['survey.question']
         self.survey = self.survey_obj.create({'title': 'Test Survey'})
+        self.user = self.user_obj.create({
+            'login': 'testtesttest',
+            'name': 'Test Test'
+        })
+        self.partner = self.partner_obj.create({
+            'name': 'testtesttest',
+            'user_id': self.user.id
+        })
         self.page = self.survey_page_obj.create({
             'title': 'Test Page',
             'survey_id': self.survey.id
@@ -34,19 +44,22 @@ class TestSurveyAnswerOnce(TransactionCase):
             self.question.id
         )
         post = {answer_tag: 'Test answer'}
-        iteration = None
+        iteration = 0
         try:
             for i in range(2):
+                # created by admin
                 input = self.user_input_obj.create({
-                    'survey_id': self.survey.id
+                    'survey_id': self.survey.id,
+                    'partner_id': self.partner.id
                 })
-                self.user_input_line_obj.save_lines(
+                # answered by test user
+                self.user_input_line_obj.sudo(self.user.id).save_lines(
                     input.id,
                     self.question,
                     post,
                     answer_tag
                 )
+                iteration += 1
         except ValidationError as e:
-            iteration = i
             self.assertEquals(e.args[1], 'duplicate_answer')
         self.assertEquals(iteration, 1)
