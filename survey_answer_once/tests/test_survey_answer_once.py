@@ -58,4 +58,12 @@ class TestSurveyAnswerOnce(TransactionCase):
                 iteration += 1
         except ValidationError as e:
             self.assertEquals(e.args[1], 'duplicate_answer')
+        # Second answer should have been disallowed by ValidationError
         self.assertEquals(iteration, 1)
+
+        # Final result should be that only one answer was saved
+        answers = self.env['survey.user_input_line'].search([
+            ('question_id', '=', self.question.id),
+            ('user_input_id.partner_id', '=', self.user.partner_id.id)
+        ])
+        self.assertEquals(len(answers), 1)
