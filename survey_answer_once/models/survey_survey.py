@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from openerp import fields, models, api, _
+from openerp import SUPERUSER_ID, fields, models, api, _
 from openerp.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -37,6 +37,18 @@ class SurveyUserInputLine(models.Model):
                 _logger.info(
                     _('Allowing, because survey allows duplicate answers'))
             else:
+                if self.env.uid == SUPERUSER_ID:
+                    alt_partner_id = record.user_input_id.partner_id.id
+                    if alt_partner_id and alt_partner_id != partner_id:
+                        partner_id = alt_partner_id
+                        _logger.info(
+                            _("User input object says this is user with partner id %d"),
+                            partner_id
+                        )
+                    else:
+                        _logger.info(
+                            _('Disallowing, because we cannot check duplicates.'))
+                        raise ValidationError(_('disallow_invite'))
                 existing = self.env['survey.user_input_line'].search([
                     ('id', '!=', record.id),
                     ('question_id', '=', question_id),
