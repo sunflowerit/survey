@@ -19,10 +19,6 @@ class TestSurveyAnswerOnce(TransactionCase):
             'login': 'testtesttest',
             'name': 'Test Test'
         })
-        self.partner = self.partner_obj.create({
-            'name': 'testtesttest',
-            'user_id': self.user.id
-        })
         self.page = self.survey_page_obj.create({
             'title': 'Test Page',
             'survey_id': self.survey.id
@@ -50,7 +46,7 @@ class TestSurveyAnswerOnce(TransactionCase):
                 # created by admin
                 input = self.user_input_obj.create({
                     'survey_id': self.survey.id,
-                    'partner_id': self.partner.id
+                    'partner_id': self.user.partner_id.id
                 })
                 # answered by test user
                 self.user_input_line_obj.sudo(self.user.id).save_lines(
