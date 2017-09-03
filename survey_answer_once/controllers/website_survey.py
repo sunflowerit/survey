@@ -30,7 +30,9 @@ class WebsiteSurveyExtension(main.WebsiteSurvey):
         except ValidationError as e:
             if len(e.args) == 2:
                 if e.args[1] == 'duplicate_answer':
-                    return json.dumps(dict(redirect='/survey/already-answered'))
+                    return json.dumps(dict(
+                        redirect='/survey/already-answered'))
                 if e.args[1] == 'disallow_invite':
-                    return json.dumps(dict(redirect='/survey/disallow-invite'))
+                    return json.dumps(dict(
+                        redirect='/survey/disallow-invite'))
             raise

@@ -24,7 +24,8 @@ class SurveyUserInputLine(models.Model):
         partner_id = self.env.user.partner_id.id
         question_id = vals.get('question_id')
         survey = self.env['survey.survey'].browse(vals.get('survey_id'))
-        user_input = self.env['survey.user_input'].browse(vals.get('user_input_id'))
+        user_input = self.env['survey.user_input'].browse(
+            vals.get('user_input_id'))
         _logger.info(
             _("User '%s' (%d, partner %d) filled survey %d question %d"),
             self.env.user.name,
@@ -42,7 +43,7 @@ class SurveyUserInputLine(models.Model):
                 if alt_partner_id and alt_partner_id != partner_id:
                     partner_id = alt_partner_id
                     _logger.info(
-                        _("User input object says this is user with partner id %d"),
+                        _("User input object says partner id is %d"),
                         partner_id
                     )
                 else:
