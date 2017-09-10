@@ -11,6 +11,5 @@
     'data': [
         'views/survey_templates.xml',
         'views/survey_view.xml',
-        # This is a remark
     ]
 }
