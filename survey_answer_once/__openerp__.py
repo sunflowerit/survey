@@ -11,5 +11,6 @@
     'data': [
         'views/survey_templates.xml',
         'views/survey_view.xml',
+# blablka
     ]
 }
